@@ -38,9 +38,9 @@
             realm:(NSString *)aRealm
 signatureProvider:(id<OASignatureProviding, NSObject>)aProvider 
 {
-    if (self = [super initWithURL:aUrl
+    if ((self = [super initWithURL:aUrl
 					  cachePolicy:NSURLRequestReloadIgnoringCacheData
-				  timeoutInterval:10.0])
+				  timeoutInterval:10.0]))
 	{    
 		consumer = [aConsumer retain];
 		
@@ -77,9 +77,9 @@ signatureProvider:(id<OASignatureProviding, NSObject>)aProvider
             nonce:(NSString *)aNonce
         timestamp:(NSString *)aTimestamp 
 {
-	if (self = [super initWithURL:aUrl
+	if ((self = [super initWithURL:aUrl
 					  cachePolicy:NSURLRequestReloadIgnoringCacheData
-				  timeoutInterval:10.0])
+				  timeoutInterval:10.0]))
 	{    
 		consumer = [aConsumer retain];
 		
@@ -216,7 +216,7 @@ signatureProvider:(id<OASignatureProviding, NSObject>)aProvider
 #pragma mark Parameters
 - (NSArray *)parameters 
 {
-    NSString *encodedParameters;
+    NSString *encodedParameters = nil;
 	BOOL shouldfree = NO;
     
     if ([[self HTTPMethod] isEqualToString:@"GET"] || [[self HTTPMethod] isEqualToString:@"DELETE"]) 
@@ -229,7 +229,10 @@ signatureProvider:(id<OASignatureProviding, NSObject>)aProvider
     }
     
     if ((encodedParameters == nil) || ([encodedParameters isEqualToString:@""]))
+    {
+        [encodedParameters release];
         return nil;
+    }
     
     NSArray *encodedParameterPairs = [encodedParameters componentsSeparatedByString:@"&"];
     NSMutableArray *requestParameters = [[NSMutableArray alloc] initWithCapacity:16];
